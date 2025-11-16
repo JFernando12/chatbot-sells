@@ -1,6 +1,6 @@
 from langchain_openai import ChatOpenAI
 
-from ..state.state import AgentState
+from app.schemas.agent_state import AgentState
 
 products = [
   {
@@ -23,7 +23,7 @@ products = [
   },
 ]
 
-def products_node(state: AgentState) -> dict:
+def products_node(state: AgentState) -> AgentState:
     llm = ChatOpenAI(model_name="gpt-4", temperature=0)
     query = state["query"]
     
@@ -39,4 +39,7 @@ def products_node(state: AgentState) -> dict:
     """
     
     response = llm.invoke(prompt)
-    return {"response": response.strip()}
+    content = response.content.strip()
+    
+    state["response"] = content
+    return state

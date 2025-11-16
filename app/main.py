@@ -1,6 +1,10 @@
 import uvicorn
+from dotenv import load_dotenv
 
-from app.api.app import app
+# Cargar variables de entorno
+load_dotenv()
+
+from app.app import app
 
 if __name__ == "__main__":
     uvicorn.run(

@@ -1,7 +1,8 @@
-from ..state.state import AgentState
 from langchain_openai import ChatOpenAI
 
-def node_classifier(state: AgentState) -> dict:
+from app.schemas.agent_state import AgentState
+
+def node_classifier(state: AgentState) -> AgentState:
     llm = ChatOpenAI(model_name="gpt-4", temperature=0)
     query = state["query"]
     prompt = f"""
@@ -13,4 +14,7 @@ def node_classifier(state: AgentState) -> dict:
     Responde solo con la categoria correspondiente.
     """
     response = llm.invoke(prompt)
-    return {"intent": response.strip()}
+    content = response.content.strip()
+
+    state["intent"] = content
+    return state
